@@ -23,3 +23,17 @@ exports.sendMessage = (db, conversation_id, sender_id, content) => {
 
     })
 }
+
+exports.getMessages = (db, conversation_id) => {
+    return new Promise((resolve, reject) => {
+        const getMessagesQuery = `
+            SELECT * FROM messages WHERE conversation_id = ? ORDER BY created_at ASC;
+        `
+        db.query(getMessagesQuery, [conversation_id], (err, result) =>{
+            if (err){
+                return reject(new Error("Unable to fetch messages for this conversation."))
+            }
+            resolve(result)
+        })
+    })
+}
