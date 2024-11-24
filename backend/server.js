@@ -2,6 +2,8 @@ const express = require ('express')
 const cors = require("cors");
 const usersRouter = require ('./routes/usersRoutes')
 const friendsRouter = require('./routes/friendsRoutes')
+const conversationsRouter = require('./routes/conversationsRoutes')
+const messagesRouter = require('./routes/messagesRoutes')
 const mysql = require('mysql2');
 const app = express()
 const dotenv = require('dotenv');
@@ -45,3 +47,13 @@ app.use('/friends', (req, res, next) => {
   req.db = db;
   next();
 }, friendsRouter)
+
+app.use('/conversations', (req,res,next) =>{
+  req.db = db;
+  next();
+}, conversationsRouter)
+
+app.use('/messages', (req,res,next) =>{
+  req.db = db
+  next()
+}, messagesRouter)
