@@ -20,14 +20,17 @@ exports.sendMessage = (db, conversation_id, sender_id, content) => {
                 resolve("Message sent")
             })
         })
-
     })
 }
 
 exports.getMessages = (db, conversation_id) => {
     return new Promise((resolve, reject) => {
         const getMessagesQuery = `
-            SELECT * FROM messages WHERE conversation_id = ? ORDER BY created_at ASC;
+            SELECT messages.conversation_id, messages.sender_id, messages.content, messages.created_at, users.username 
+            FROM messages 
+            JOIN users ON messages.sender_id = users.id 
+            WHERE conversation_id = ?
+            ORDER BY messages.created_at ASC;
         `
         db.query(getMessagesQuery, [conversation_id], (err, result) =>{
             if (err){
